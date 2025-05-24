@@ -1,0 +1,145 @@
+{
+  "name": "claude-ai-assistant",
+  "displayName": "Claude AI Assistant",
+  "description": "Integrate Claude AI directly into VS Code for code assistance and chat",
+  "version": "1.0.0",
+  "publisher": "Moto",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moto/claude-vscode-extension"
+  },
+  "bugs": {
+    "url": "https://github.com/Moto/claude-vscode-extension/issues"
+  },
+  "homepage": "https://github.com/Moto/claude-vscode-extension#readme",
+  "keywords": ["ai", "claude", "anthropic", "assistant", "code-review", "chat"],
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claude.openChat",
+        "title": "Open Claude Chat",
+        "category": "Claude"
+      },
+      {
+        "command": "claude.explainCode",
+        "title": "Explain Selected Code",
+        "category": "Claude"
+      },
+      {
+        "command": "claude.reviewCode",
+        "title": "Review Selected Code",
+        "category": "Claude"
+      },
+      {
+        "command": "claude.generateTests",
+        "title": "Generate Tests for Selected Code",
+        "category": "Claude"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "claude.openChat",
+        "key": "ctrl+shift+c",
+        "mac": "cmd+shift+c"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "when": "editorHasSelection",
+          "command": "claude.explainCode",
+          "group": "claude"
+        },
+        {
+          "when": "editorHasSelection",
+          "command": "claude.reviewCode",
+          "group": "claude"
+        },
+        {
+          "when": "editorHasSelection",
+          "command": "claude.generateTests",
+          "group": "claude"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "claude.openChat"
+        },
+        {
+          "command": "claude.explainCode",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "claude.reviewCode",
+          "when": "editorHasSelection"
+        },
+        {
+          "command": "claude.generateTests",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claude AI Assistant",
+      "properties": {
+        "claude.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your Anthropic API key for Claude",
+          "markdownDescription": "Your Anthropic API key. Get one at [console.anthropic.com](https://console.anthropic.com)"
+        },
+        "claude.model": {
+          "type": "string",
+          "default": "claude-sonnet-4-20250514",
+          "enum": [
+            "claude-sonnet-4-20250514",
+            "claude-3-5-sonnet-20241022",
+            "claude-3-haiku-20240307"
+          ],
+          "description": "Claude model to use"
+        },
+        "claude.maxTokens": {
+          "type": "number",
+          "default": 4000,
+          "description": "Maximum tokens for Claude responses"
+        }
+      }
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "claudeChat",
+          "name": "Claude Chat",
+          "when": "true"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "claudeChat",
+        "contents": "Welcome to Claude AI Assistant!\n\n[Open Chat](command:claude.openChat)\n\nTo get started, configure your API key in settings.",
+        "when": "true"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.3"
+  }
+}
